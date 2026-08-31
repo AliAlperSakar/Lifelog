@@ -3,21 +3,28 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// Deployed to GitHub Pages as a project site (github.com/<user>/Lifelog →
+// <user>.github.io/Lifelog/), so assets need that subpath as their base.
+// Root-domain hosts (Vercel/Netlify/local) keep the default '/'. The GitHub
+// Actions Pages workflow sets GH_PAGES=true when building for Pages.
+const BASE = process.env.GH_PAGES === 'true' ? '/Lifelog/' : '/'
+
 // https://vite.dev/config/
 export default defineConfig({
+  base: BASE,
   plugins: [
     react(),
     VitePWA({
       registerType: 'prompt',
       includeAssets: ['favicon.ico', 'favicon-32.png', 'favicon-16.png', 'apple-touch-icon.png'],
       manifest: {
-        id: '/',
+        id: BASE,
         name: 'LifeLog — Daily Life Tracker',
         short_name: 'LifeLog',
         description:
           'A personal daily timeline for nutrition, activity, sleep, and lifestyle. Private and offline-first — your data stays on your device.',
-        start_url: '/',
-        scope: '/',
+        start_url: BASE,
+        scope: BASE,
         display: 'standalone',
         display_override: ['standalone', 'browser'],
         background_color: '#f6f7f5',
@@ -25,15 +32,15 @@ export default defineConfig({
         orientation: 'portrait-primary',
         categories: ['health', 'lifestyle', 'productivity'],
         icons: [
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-          { src: '/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: `${BASE}icon-192.png`, sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: `${BASE}icon-512.png`, sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: `${BASE}icon-maskable-512.png`, sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
       workbox: {
         // App shell + static assets: precache and serve offline.
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
-        navigateFallback: '/index.html',
+        navigateFallback: `${BASE}index.html`,
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         // No runtime network calls are made for personal data (local-first),
