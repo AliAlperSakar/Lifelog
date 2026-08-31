@@ -211,5 +211,4 @@ insights, optional encrypted sync) — none of it is implemented here.
 
 ## License
 
-Proprietary — all rights reserved. See `LICENSE`. This is not open-source
-software.
+MIT — see `LICENSE`.
