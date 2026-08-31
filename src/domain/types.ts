@@ -284,6 +284,17 @@ export type LogEntry =
 
 export type LogEntryOfCategory<C extends LogCategory> = Extract<LogEntry, { category: C }>
 
+/**
+ * A plain `Omit<Union, K>` collapses to the *intersection* of member keys
+ * (that's how `keyof` works over a union), which silently drops
+ * category-specific fields like `subtype`/`source` for members that don't
+ * share them across every branch. This distributes the Omit over each
+ * union member first, preserving per-category shape — used anywhere we
+ * need "a LogEntry variant minus its generated fields" (repository create
+ * input, quick-log form payloads).
+ */
+export type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never
+
 // ---------------------------------------------------------------------------
 // Profile / goals / settings
 // ---------------------------------------------------------------------------

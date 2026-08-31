@@ -23,7 +23,18 @@ describe('logEntryRepository + aggregation integration', () => {
     let entries = await logEntryRepository.getForDate('2026-08-31')
     expect(calculateDailyNutrition(entries).calories?.value).toBe(105)
 
-    await logEntryRepository.update(entry.id, { detail: { ...entry.detail, calories: 120 } } as never)
+    // Quick-log forms always resubmit the full category payload on edit, so
+    // update() takes the same shape as create() rather than a sparse patch.
+    await logEntryRepository.update(entry.id, {
+      category: 'food',
+      subtype: 'meal',
+      timestamp: '2026-08-31T12:00:00+02:00',
+      title: 'Banana',
+      detail: { calories: 120, proteinG: 1.3, carbsG: 27, fatG: 0.3, fiberG: 3.1, sugarG: 14 },
+      source: 'manual',
+      measurementStatus: 'approximate',
+      confidence: 'medium',
+    })
 
     entries = await logEntryRepository.getForDate('2026-08-31')
     expect(calculateDailyNutrition(entries).calories?.value).toBe(120)

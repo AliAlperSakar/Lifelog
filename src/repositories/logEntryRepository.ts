@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid'
 import { db } from '../db/database'
-import type { LogEntry } from '../domain/types'
+import type { DistributiveOmit, LogEntry } from '../domain/types'
 import { localDateFromTimestamp, nowIso } from '../utils/date'
 
-export type NewLogEntry = Omit<LogEntry, 'id' | 'localDate' | 'createdAt' | 'updatedAt'> & {
+export type NewLogEntry = DistributiveOmit<LogEntry, 'id' | 'localDate' | 'createdAt' | 'updatedAt'> & {
   localDate?: string
 }
 
@@ -20,13 +20,17 @@ async function create(input: NewLogEntry): Promise<LogEntry> {
   return entry
 }
 
-async function update(id: string, changes: Partial<LogEntry>): Promise<void> {
-  const patch: Partial<LogEntry> = { ...changes, updatedAt: nowIso() }
-  // Keep localDate in sync if the timestamp moved.
-  if (changes.timestamp && !changes.localDate) {
-    ;(patch as { localDate?: string }).localDate = localDateFromTimestamp(changes.timestamp)
+/** Accepts the same "full variant minus generated fields" shape as
+ * `create` — quick-log forms always resubmit the whole category payload on
+ * edit, not a sparse patch, which keeps this type-safe across the
+ * discriminated union (see DistributiveOmit). */
+async function update(id: string, changes: NewLogEntry): Promise<void> {
+  const patch = {
+    ...changes,
+    localDate: changes.localDate ?? localDateFromTimestamp(changes.timestamp),
+    updatedAt: nowIso(),
   }
-  await db.entries.update(id, patch)
+  await db.entries.update(id, patch as Partial<LogEntry>)
 }
 
 async function remove(id: string): Promise<void> {

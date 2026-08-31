@@ -102,3 +102,18 @@ export function formatDuration(totalMinutes: number): string {
 export function dayStart(localDate: string): Date {
   return startOfDay(parseISO(localDate))
 }
+
+/** For pre-filling an <input type="datetime-local">: same string-slicing
+ * rationale as localDateFromTimestamp/formatTime above — read the wall-clock
+ * characters directly rather than reinterpreting through the runtime tz. */
+export function toDateTimeLocalValue(timestamp: string): string {
+  const match = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/.exec(timestamp)
+  return match ? match[1] : format(parseISO(timestamp), "yyyy-MM-dd'T'HH:mm")
+}
+
+/** The browser interprets an <input type="datetime-local"> value as wall
+ * clock time in the device's current timezone, which is exactly the
+ * timezone context we want to embed as the entry's offset. */
+export function fromDateTimeLocalValue(value: string): string {
+  return formatISO(new Date(value))
+}
