@@ -55,7 +55,7 @@ export function generateDailyReport(localDate: string, entries: LogEntry[], goal
   // --- Activity ---------------------------------------------------------
   if (s.steps) activity.push(`Steps: ~${Math.round(s.steps.value).toLocaleString()}.`)
   if (s.running.sessionCount > 0) {
-    const dist = s.running.distanceKm ? ` (~${formatApprox(s.running.distanceKm.value, 'approximate', 1)} km)` : ''
+    const dist = s.running.distanceKm ? ` (${formatApprox(s.running.distanceKm.value, 'approximate', 1)} km)` : ''
     activity.push(`Running: ${s.running.sessionCount} session${s.running.sessionCount > 1 ? 's' : ''}${dist}.`)
   }
   const strengthCount = entries.filter((e) => e.category === 'strength').length
@@ -71,7 +71,7 @@ export function generateDailyReport(localDate: string, entries: LogEntry[], goal
   if (s.fluids) lifestyle.push(`Fluids: ~${Math.round(s.fluids.value)} ml${s.water ? ` (water ~${Math.round(s.water.value)} ml)` : ''}.`)
   if (s.caffeineMg) lifestyle.push(`Caffeine: ~${Math.round(s.caffeineMg.value)} mg.`)
   if (s.nicotine) lifestyle.push(`Nicotine: ${s.nicotine.value} logged use${s.nicotine.value === 1 ? '' : 's'}.`)
-  if (s.alcoholUnits) lifestyle.push(`Alcohol: ~${formatApprox(s.alcoholUnits.value, 'approximate', 1)} units.`)
+  if (s.alcoholUnits) lifestyle.push(`Alcohol: ${formatApprox(s.alcoholUnits.value, 'approximate', 1)} units.`)
   if (s.cannabisCount) lifestyle.push(`Cannabis: ${s.cannabisCount.value} logged use${s.cannabisCount.value === 1 ? '' : 's'}.`)
 
   // --- Went well (deterministic, most notable first, capped) -------------
@@ -105,7 +105,7 @@ export function generateDailyReport(localDate: string, entries: LogEntry[], goal
     couldImprove.push(`Nicotine use was logged ${s.nicotine.value} time${s.nicotine.value === 1 ? '' : 's'}, above your goal of reducing use.`)
   }
   if (activeGoalTypes.has('reduce_alcohol') && s.alcoholUnits && s.alcoholUnits.value > 0) {
-    couldImprove.push(`Alcohol was logged (~${formatApprox(s.alcoholUnits.value, 'approximate', 1)} units), above your goal of reducing use.`)
+    couldImprove.push(`Alcohol was logged (${formatApprox(s.alcoholUnits.value, 'approximate', 1)} units), above your goal of reducing use.`)
   }
 
   // --- Tomorrow (tied directly to what was flagged above, capped at 3) ---

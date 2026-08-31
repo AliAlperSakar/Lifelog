@@ -51,7 +51,7 @@ export function EntryTimeline({ entries, emptyAction }: EntryTimelineProps) {
                   <span className="shrink-0 text-xs tabular-nums text-[var(--color-ink-faint)]">{formatTime(entry.timestamp)}</span>
                 </span>
                 {summary.lines.length > 0 && (
-                  <span className="mt-0.5 block truncate text-sm text-[var(--color-ink-soft)]">{summary.lines.filter(Boolean).join(' · ')}</span>
+                  <span className="mt-0.5 block text-sm text-[var(--color-ink-soft)]">{summary.lines.filter(Boolean).join(' · ')}</span>
                 )}
                 {summary.approximate && (
                   <span className="mt-1 inline-block">
