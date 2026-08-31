@@ -21,7 +21,7 @@ export function QuickMetricsGrid({ summary }: { summary: DailySummary }) {
   if (tiles.length === 0) return null
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+    <div className="grid grid-cols-2 gap-3">
       {tiles.map((t) => (
         <StatTile key={t.key} label={t.label} value={t.value} icon={t.icon} />
       ))}

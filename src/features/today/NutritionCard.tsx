@@ -38,8 +38,8 @@ export function NutritionCard({ nutrition }: NutritionCardProps) {
       <div>
         <span className="text-3xl font-semibold tabular-nums text-[var(--color-ink)]">
           {formatApprox(nutrition.calories.value, nutrition.calories.approximate ? 'approximate' : 'exact')}
-        </span>
-        <span className="ml-1.5 text-base font-medium text-[var(--color-ink-soft)]">kcal</span>
+        </span>{' '}
+        <span className="text-base font-medium text-[var(--color-ink-soft)]">kcal</span>
       </div>
       {shown.length > 0 && (
         <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">

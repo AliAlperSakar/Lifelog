@@ -34,7 +34,7 @@ export function TodayScreen() {
       {!entries || !summary ? (
         <div className="h-40 animate-pulse rounded-[var(--radius-card)] bg-[var(--color-surface-alt)]" />
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-[1.1fr_1.4fr_1fr] sm:items-start">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)_minmax(0,1fr)] sm:items-start">
           <div className="flex flex-col gap-4 sm:order-1">
             <NutritionCard nutrition={summary.nutrition} />
             <QuickMetricsGrid summary={summary} />

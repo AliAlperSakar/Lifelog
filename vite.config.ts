@@ -51,5 +51,8 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
     css: true,
+    // Playwright e2e specs live in ./e2e and have their own runner/config —
+    // keep them out of Vitest's discovery (both use a `*.spec.ts` pattern).
+    exclude: ['**/node_modules/**', '**/e2e/**'],
   },
 })

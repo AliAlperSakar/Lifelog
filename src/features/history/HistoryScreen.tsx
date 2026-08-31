@@ -24,7 +24,7 @@ export function HistoryScreen() {
         <h1 className="text-xl font-semibold text-[var(--color-ink)]">History</h1>
       </header>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-[320px_1fr] sm:items-start">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-[320px_minmax(0,1fr)] sm:items-start">
         <MonthCalendar
           monthCursor={monthCursor}
           onMonthChange={setMonthCursor}
